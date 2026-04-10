@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>宮古沖縄3日間 ご旅行のご案内｜11日会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --miyako:#0596a6;
+  --miyako-dark:#01606e;
+  --miyako-light:#7ed4de;
+  --sunset:#ff8a3d;
+  --sand:#fff6e5;
+  --navy:#0b2545;
+  --text:#2a3142;
+  --gray:#6b7280;
+  --line:#e5e7eb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:"Noto Sans JP",sans-serif;color:var(--text);background:#f5f7fb;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--miyako);text-decoration:none}
+
+/* ===== 認証画面 ===== */
+#auth-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(135deg,#01606e 0%,#0596a6 50%,#7ed4de 100%);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.auth-card{
+  background:#fff;border-radius:20px;padding:40px 32px;max-width:400px;width:100%;
+  box-shadow:0 25px 50px rgba(0,0,0,.25);text-align:center;
+}
+.auth-card .lock{font-size:56px;margin-bottom:16px}
+.auth-card h1{font-family:"Shippori Mincho",serif;font-size:22px;color:var(--navy);margin-bottom:8px;letter-spacing:.05em}
+.auth-card p{font-size:13px;color:var(--gray);margin-bottom:24px;line-height:1.7}
+.auth-card input{
+  width:100%;padding:14px 16px;border:2px solid var(--line);border-radius:10px;
+  font-size:16px;margin-bottom:16px;text-align:center;font-family:inherit;
+}
+.auth-card input:focus{outline:none;border-color:var(--miyako)}
+.auth-card button{
+  width:100%;padding:14px;background:var(--miyako);color:#fff;border:none;
+  border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:background .2s;
+}
+.auth-card button:hover{background:var(--miyako-dark)}
+.auth-card .error{color:#dc2626;font-size:12px;margin-top:10px;display:none}
+
+/* ===== メイン ===== */
+#report-content{display:none}
+.hero{
+  position:relative;color:#fff;padding:90px 20px 70px;text-align:center;
+  background:
+    linear-gradient(135deg,rgba(1,96,110,.88) 0%,rgba(5,150,166,.78) 100%),
+    radial-gradient(circle at 20% 30%,rgba(255,255,255,.15) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(255,255,255,.1) 0%,transparent 50%),
+    linear-gradient(180deg,#013845 0%,#0596a6 60%,#7ed4de 100%);
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1px 1px at 50% 70%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1.5px 1.5px at 80% 20%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 30% 80%,rgba(255,255,255,.6),transparent),
+    radial-gradient(2px 2px at 70% 50%,rgba(255,255,255,.4),transparent);
+  background-size:200px 200px;pointer-events:none;opacity:.7;
+}
+.hero .kicker{font-size:13px;letter-spacing:.4em;opacity:.85;margin-bottom:14px;font-weight:500}
+.hero h1{font-family:"Shippori Mincho",serif;font-size:44px;font-weight:700;line-height:1.3;margin-bottom:18px;text-shadow:0 2px 20px rgba(0,0,0,.25)}
+.hero .dates{font-size:17px;letter-spacing:.15em;opacity:.95;margin-bottom:30px}
+.hero .group{
+  display:inline-block;padding:10px 24px;border:1px solid rgba(255,255,255,.6);
+  border-radius:999px;font-size:13px;letter-spacing:.2em;
+}
+.wave{
+  position:absolute;bottom:-1px;left:0;width:100%;height:50px;
+  background:#f5f7fb;
+  mask:radial-gradient(circle at 50% 100%,transparent 20%,#000 22%);
+  -webkit-mask:radial-gradient(circle at 50% 100%,transparent 20%,#000 22%);
+}
+
+/* 概要 */
+.container{max-width:1000px;margin:0 auto;padding:0 20px}
+.overview{margin-top:-30px;position:relative;z-index:2;background:#fff;border-radius:20px;padding:36px 28px;box-shadow:0 20px 40px rgba(11,37,69,.08)}
+.overview h2{font-family:"Shippori Mincho",serif;font-size:22px;color:var(--navy);border-left:4px solid var(--miyako);padding-left:14px;margin-bottom:20px}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
+.ov-item{padding:14px 16px;background:#f8fafc;border-radius:10px;border-left:3px solid var(--miyako-light)}
+.ov-item .label{font-size:11px;color:var(--gray);margin-bottom:4px;letter-spacing:.05em}
+.ov-item .value{font-size:15px;font-weight:700;color:var(--navy)}
+
+/* 日程セクション */
+.day-section{margin:50px 0}
+.day-header{
+  display:flex;align-items:center;gap:20px;margin-bottom:24px;
+}
+.day-number{
+  flex-shrink:0;width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--miyako) 0%,var(--miyako-dark) 100%);
+  color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 10px 25px rgba(5,150,166,.3);
+}
+.day-number .d-label{font-size:10px;letter-spacing:.1em;opacity:.9}
+.day-number .d-num{font-family:"Shippori Mincho",serif;font-size:28px;font-weight:700;line-height:1}
+.day-title h2{font-family:"Shippori Mincho",serif;font-size:26px;color:var(--navy);margin-bottom:4px}
+.day-title .date{font-size:13px;color:var(--gray);letter-spacing:.05em}
+
+.day-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(11,37,69,.08)}
+.day-banner{
+  position:relative;height:220px;display:flex;align-items:center;justify-content:center;color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,.35);
+}
+.banner-d1{background:
+  radial-gradient(circle at 30% 40%,rgba(255,255,255,.2),transparent 60%),
+  linear-gradient(135deg,#02a6c2 0%,#0596a6 40%,#7ed4de 100%)}
+.banner-d2{background:
+  radial-gradient(circle at 70% 30%,rgba(255,255,255,.15),transparent 50%),
+  linear-gradient(135deg,#ff8a3d 0%,#ffa36a 50%,#ffd4a3 100%)}
+.banner-d3{background:
+  radial-gradient(circle at 50% 50%,rgba(255,255,255,.18),transparent 60%),
+  linear-gradient(180deg,#ff6b8b 0%,#ffa36a 50%,#fff6e5 100%)}
+.day-banner .banner-emoji{font-size:60px;margin-bottom:8px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2))}
+.day-banner .banner-text{font-family:"Shippori Mincho",serif;font-size:24px;font-weight:700;letter-spacing:.1em}
+.day-banner .banner-inner{text-align:center}
+
+.timeline{padding:28px 24px}
+.tl-item{
+  position:relative;padding:0 0 28px 42px;border-left:2px dashed var(--miyako-light);
+}
+.tl-item:last-child{border-left-color:transparent;padding-bottom:0}
+.tl-item::before{
+  content:"";position:absolute;left:-9px;top:4px;width:16px;height:16px;
+  border-radius:50%;background:var(--miyako);border:3px solid #fff;box-shadow:0 0 0 2px var(--miyako-light);
+}
+.tl-time{
+  display:inline-block;font-weight:700;color:var(--miyako-dark);font-size:14px;
+  background:#e6f8fa;padding:4px 10px;border-radius:6px;margin-bottom:6px;
+}
+.tl-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.tl-desc{font-size:13px;color:var(--gray);line-height:1.7}
+.tl-desc strong{color:var(--text)}
+
+/* スポット紹介カード */
+.spots{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:24px}
+.spot{
+  background:#f8fafc;border-radius:12px;padding:18px;border-top:3px solid var(--miyako);
+  transition:transform .2s;
+}
+.spot:hover{transform:translateY(-3px)}
+.spot .s-icon{font-size:32px;margin-bottom:8px}
+.spot .s-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.spot .s-desc{font-size:12px;color:var(--gray);line-height:1.7}
+
+/* 宿泊・食事 */
+.hotel-box{
+  margin-top:24px;background:linear-gradient(135deg,#fff6e5 0%,#ffe8cc 100%);
+  border-radius:14px;padding:22px;display:flex;align-items:center;gap:20px;
+}
+.hotel-box .h-emoji{font-size:42px}
+.hotel-box .h-label{font-size:11px;color:var(--sunset);font-weight:700;letter-spacing:.1em;margin-bottom:3px}
+.hotel-box .h-name{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.hotel-box .h-tel{font-size:12px;color:var(--gray)}
+.dinner-box{
+  margin-top:14px;background:#fff1f5;border-radius:14px;padding:20px;
+  border-left:4px solid #ff6b8b;
+}
+.dinner-box .d-label{font-size:11px;color:#c2185b;font-weight:700;letter-spacing:.1em}
+.dinner-box .d-name{font-size:16px;font-weight:700;color:var(--navy);margin:4px 0}
+.dinner-box .d-info{font-size:13px;color:var(--gray);line-height:1.7}
+
+/* グループ分け */
+.group-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.group-card{
+  background:#fff;border:2px solid var(--line);border-radius:14px;padding:18px;
+}
+.group-card.tour{border-color:var(--miyako-light);background:#f0fafc}
+.group-card.golf{border-color:#86efac;background:#f0fdf4}
+.group-card .g-badge{
+  display:inline-block;padding:4px 12px;border-radius:999px;
+  font-size:11px;font-weight:700;margin-bottom:10px;letter-spacing:.05em;
+}
+.tour .g-badge{background:var(--miyako);color:#fff}
+.golf .g-badge{background:#16a34a;color:#fff}
+.group-card .g-name{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.group-card .g-sched{font-size:12px;color:var(--gray);line-height:1.9}
+
+/* 重要事項 */
+.notice{
+  max-width:1000px;margin:40px auto;padding:24px;
+  background:#fffbeb;border-left:5px solid #f59e0b;border-radius:10px;
+}
+.notice h3{color:#92400e;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.notice ul{list-style:none;padding:0}
+.notice li{font-size:13px;color:#78350f;padding:6px 0 6px 20px;position:relative;line-height:1.7}
+.notice li::before{content:"▸";position:absolute;left:0;color:#f59e0b;font-weight:700}
+
+/* 持ち物 */
+.checklist{
+  max-width:1000px;margin:40px auto;background:#fff;border-radius:18px;padding:28px;
+  box-shadow:0 10px 30px rgba(11,37,69,.06);
+}
+.checklist h3{font-family:"Shippori Mincho",serif;font-size:20px;color:var(--navy);margin-bottom:18px;border-left:4px solid var(--sunset);padding-left:12px}
+.checklist-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8fafc;border-radius:8px;font-size:13px}
+.check-item .ci-icon{font-size:18px}
+
+/* フッター */
+footer{
+  background:linear-gradient(135deg,var(--navy) 0%,#1e3a5f 100%);color:#fff;
+  margin-top:60px;padding:50px 20px 30px;text-align:center;
+}
+footer h3{font-family:"Shippori Mincho",serif;font-size:18px;margin-bottom:16px}
+footer .contact{font-size:13px;line-height:2;opacity:.9}
+footer .copyright{font-size:11px;opacity:.6;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+
+/* モバイル */
+@media (max-width:720px){
+  .hero{padding:70px 16px 60px}
+  .hero h1{font-size:30px}
+  .hero .dates{font-size:14px}
+  .overview{padding:24px 20px}
+  .day-header{gap:14px}
+  .day-number{width:60px;height:60px}
+  .day-number .d-num{font-size:22px}
+  .day-title h2{font-size:20px}
+  .day-banner{height:180px}
+  .day-banner .banner-emoji{font-size:48px}
+  .day-banner .banner-text{font-size:18px}
+  .timeline{padding:22px 18px}
+  .tl-item{padding:0 0 24px 32px}
+  .group-split{grid-template-columns:1fr}
+  .hotel-box{flex-direction:column;text-align:center;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 認証画面 ===== -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="lock">🔒</div>
+    <h1>11日会 ご旅行のご案内</h1>
+    <p>このページはパスワードで保護されています。<br>幹事様にお伺いのパスワードをご入力ください。</p>
+    <input type="password" id="pwd" placeholder="パスワード" autocomplete="off">
+    <button onclick="checkPwd()">アクセスする</button>
+    <div class="error" id="err">パスワードが正しくありません</div>
+  </div>
+</div>
+
+<!-- ===== 本体 ===== -->
+<div id="report-content">
+
+<section class="hero">
+  <div class="kicker">LITTLE CONCIER TRAVEL · ITINERARY</div>
+  <h1>宮古沖縄 三日間<br>海と島唄の旅</h1>
+  <div class="dates">2026年10月24日（土）〜 10月26日（月）</div>
+  <div class="group">11日会 御一行様（13名）</div>
+  <div class="wave"></div>
+</section>
+
+<div class="container">
+
+  <!-- 旅行概要 -->
+  <section class="overview">
+    <h2>ご旅行概要</h2>
+    <div class="overview-grid">
+      <div class="ov-item"><div class="label">ツアー名</div><div class="value">宮古沖縄 3日間</div></div>
+      <div class="ov-item"><div class="label">出発日</div><div class="value">2026/10/24（土）</div></div>
+      <div class="ov-item"><div class="label">帰着日</div><div class="value">2026/10/26（月）</div></div>
+      <div class="ov-item"><div class="label">ご人数</div><div class="value">13名様</div></div>
+      <div class="ov-item"><div class="label">添乗員</div><div class="value">1名同行</div></div>
+      <div class="ov-item"><div class="label">ご利用航空会社</div><div class="value">スカイマーク／JTA</div></div>
+    </div>
+  </section>
+
+  <!-- ===== DAY 1 ===== -->
+  <section class="day-section">
+    <div class="day-header">
+      <div class="day-number"><div class="d-label">DAY</div><div class="d-num">1</div></div>
+      <div class="day-title">
+        <h2>宮古島へ──青い海と絶景スポットめぐり</h2>
+        <div class="date">2026年10月24日（土）</div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-banner banner-d1">
+        <div class="banner-inner">
+          <div class="banner-emoji">🏝️</div>
+          <div class="banner-text">MIYAKO ISLAND</div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-time">08:05</span>
+          <div class="tl-title">福岡空港 出発 ✈️ スカイマーク501便</div>
+          <div class="tl-desc">福岡発 → 那覇着 9:45</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">10:20</span>
+          <div class="tl-title">那覇空港 乗継 ✈️ スカイマーク543便</div>
+          <div class="tl-desc">那覇発 → 下地島着 11:10</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">11:50</span>
+          <div class="tl-title">下地島空港 到着 🚌 貸切バスで観光スタート</div>
+          <div class="tl-desc">宮古島観光バスにて終日貸切。添乗員がご案内いたします。</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">11:50〜14:20</span>
+          <div class="tl-title">通り池 〜 伊良部大橋 〜 宮古市内（昼食）</div>
+          <div class="tl-desc">伊良部島の神秘スポット「通り池」、3,540ｍの絶景橋「伊良部大橋」を渡り、市内にて昼食をお取りください（自由昼食）。</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">14:50〜17:00</span>
+          <div class="tl-title">宮古島海中公園 〜 雪塩ミュージアム 〜 西平安名岬</div>
+          <div class="tl-desc">海中観察施設、名産「雪塩」の工場見学、島最北端の岬まで一気にめぐります。</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">17:30頃</span>
+          <div class="tl-title">ひららの湯 たびのホテルlit宮古島 チェックイン 🏨</div>
+          <div class="tl-desc">天然温泉併設のホテル。市街地のど真ん中にあり散策にも便利です。</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">19:00〜</span>
+          <div class="tl-title">夕食：しゃぶ邸百八 宮古島本店 🍖</div>
+          <div class="tl-desc">沖縄ブランド「あぐー豚」のしゃぶしゃぶ。18:30〜20:30は<strong>島唄民謡ライブ</strong>も楽しめます。</div>
+        </div>
+      </div>
+
+      <div class="timeline" style="padding-top:0">
+        <h3 style="font-family:'Shippori Mincho',serif;font-size:18px;color:var(--navy);margin-bottom:14px">立ち寄りスポット</h3>
+        <div class="spots">
+          <div class="spot"><div class="s-icon">🌊</div><div class="s-name">通り池</div><div class="s-desc">伊良部島にある二つ並んだ神秘の池。海とつながる地質スポット。</div></div>
+          <div class="spot"><div class="s-icon">🌉</div><div class="s-name">伊良部大橋</div><div class="s-desc">全長3,540m、通行無料の橋としては日本最長。エメラルドの海を一望。</div></div>
+          <div class="spot"><div class="s-icon">🐠</div><div class="s-name">宮古島海中公園</div><div class="s-desc">海の中を歩いているような感覚で魚が見られる海中観察施設。</div></div>
+          <div class="spot"><div class="s-icon">🧂</div><div class="s-name">雪塩ミュージアム</div><div class="s-desc">世界一ミネラル豊富な「雪塩」の製造工程を無料で見学できます。</div></div>
+          <div class="spot"><div class="s-icon">🌅</div><div class="s-name">西平安名岬</div><div class="s-desc">宮古島最北端。池間大橋と青い海のパノラマが広がる絶景岬。</div></div>
+        </div>
+      </div>
+
+      <div style="padding:0 24px 24px">
+        <div class="hotel-box">
+          <div class="h-emoji">🏨</div>
+          <div>
+            <div class="h-label">ご宿泊 1泊目</div>
+            <div class="h-name">ひららの湯 たびのホテルlit宮古島</div>
+            <div class="h-tel">TEL：0980-75-3100</div>
+          </div>
+        </div>
+        <div class="dinner-box">
+          <div class="d-label">DINNER</div>
+          <div class="d-name">しゃぶ邸百八 宮古島本店　19:00〜</div>
+          <div class="d-info">あぐー豚しゃぶしゃぶ／島唄民謡ライブ（18:30〜20:30）</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DAY 2 ===== -->
+  <section class="day-section">
+    <div class="day-header">
+      <div class="day-number"><div class="d-label">DAY</div><div class="d-num">2</div></div>
+      <div class="day-title">
+        <h2>観光組とゴルフ組に分かれて那覇へ</h2>
+        <div class="date">2026年10月25日（日）</div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-banner banner-d2">
+        <div class="banner-inner">
+          <div class="banner-emoji">⛳🏖️</div>
+          <div class="banner-text">GOLF & TOUR</div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div style="background:#fef7ed;padding:16px;border-radius:10px;margin-bottom:24px;font-size:13px;color:#92400e">
+          📢 <strong>2日目は2グループに分かれます。</strong>お間違えのないようにご注意ください。
+        </div>
+
+        <div class="group-split">
+          <!-- 観光組 -->
+          <div class="group-card tour">
+            <span class="g-badge">🏖 観光組（11名）</span>
+            <div class="g-name">那覇・国際通りをゆったり散策</div>
+            <div class="g-sched">
+              09:50 ホテル発（貸切バス）<br>
+              10:30 下地島空港 着<br>
+              11:50 SKY542 下地島発<br>
+              12:40 那覇空港 着<br>
+              13:08 ゆいレールで牧志駅へ<br>
+              13:25 牧志駅 到着<br>
+              13:30頃 ホテル チェックイン
+            </div>
+          </div>
+          <!-- ゴルフ組 -->
+          <div class="group-card golf">
+            <span class="g-badge">⛳ ゴルフ組（2名）</span>
+            <div class="g-name">エメラルドコーストでラウンド</div>
+            <div class="g-sched">
+              08:00 ホテル発（貸切）<br>
+              08:30頃〜 エメラルドコーストGL<br>
+              〜15:00 プレー終了<br>
+              15:30 ゴルフ場発<br>
+              17:10 JTA564 宮古発<br>
+              18:00 那覇空港 着<br>
+              18:48 牧志駅着 → 18:55 ホテル
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px">
+          <div class="tl-item">
+            <span class="tl-time">午後〜夜</span>
+            <div class="tl-title">那覇 自由行動 🍜</div>
+            <div class="tl-desc">牧志公設市場、壺屋やちむん通り、国際通りの散策、夜は市内で沖縄料理や居酒屋をどうぞ。<br><em>※夕食は各自となります</em></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="padding:0 24px 24px">
+        <div class="hotel-box">
+          <div class="h-emoji">🏨</div>
+          <div>
+            <div class="h-label">ご宿泊 2泊目</div>
+            <div class="h-name">ホテルパームロイヤルリゾート国際通り</div>
+            <div class="h-tel">TEL：098-865-5551　／　牧志駅・国際通り徒歩圏</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DAY 3 ===== -->
+  <section class="day-section">
+    <div class="day-header">
+      <div class="day-number"><div class="d-label">DAY</div><div class="d-num">3</div></div>
+      <div class="day-title">
+        <h2>那覇で自由行動 〜 福岡へ</h2>
+        <div class="date">2026年10月26日（月）</div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-banner banner-d3">
+        <div class="banner-inner">
+          <div class="banner-emoji">🌺</div>
+          <div class="banner-text">GOOD-BYE NAHA</div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-time">朝食後</span>
+          <div class="tl-title">ホテルにて朝食後、自由行動 🍳</div>
+          <div class="tl-desc">お荷物はホテルにお預けいただけます。最後の那覇散策をお楽しみください。</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">13:00頃</span>
+          <div class="tl-title">那覇空港にて集合</div>
+          <div class="tl-desc">ホテルから各自で空港へご移動ください（モノレールが便利です）。</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">15:10</span>
+          <div class="tl-title">那覇空港 出発 ✈️ JTA58便</div>
+          <div class="tl-desc">那覇発 → 福岡着 16:50　お疲れさまでした！</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 重要事項 -->
+<div class="notice">
+  <h3>⚠️ ご注意事項</h3>
+  <ul>
+    <li>10/26 は荷物のホテル→那覇空港配送が時間帯の都合で利用できません。お荷物は各自でお持ちください。</li>
+    <li>10/24 の夕食以外のお食事（昼食3回・2日目夕食）は各自となります。</li>
+    <li>2日目は観光組・ゴルフ組の<strong>グループ分け</strong>があります。出発時間にご注意ください。</li>
+    <li>本行程は運輸機関の都合、天候、道路状況などにより一部変更となる場合があります。</li>
+    <li>フライト・ホテル情報は2026年4月時点のものです。</li>
+  </ul>
+</div>
+
+<!-- 持ち物 -->
+<div class="checklist">
+  <h3>🎒 持ち物チェックリスト</h3>
+  <div class="checklist-grid">
+    <div class="check-item"><span class="ci-icon">🪪</span>身分証明書</div>
+    <div class="check-item"><span class="ci-icon">💴</span>現金・カード</div>
+    <div class="check-item"><span class="ci-icon">👕</span>着替え（2泊分）</div>
+    <div class="check-item"><span class="ci-icon">🧴</span>日焼け止め</div>
+    <div class="check-item"><span class="ci-icon">🕶</span>サングラス</div>
+    <div class="check-item"><span class="ci-icon">🧢</span>帽子</div>
+    <div class="check-item"><span class="ci-icon">☂️</span>折りたたみ傘</div>
+    <div class="check-item"><span class="ci-icon">🔌</span>モバイルバッテリー</div>
+    <div class="check-item"><span class="ci-icon">💊</span>常備薬</div>
+    <div class="check-item"><span class="ci-icon">⛳</span>ゴルフ組：ウェア・シューズ</div>
+  </div>
+</div>
+
+<footer>
+  <h3>お問い合わせ</h3>
+  <div class="contact">
+    株式会社リトルコンシェル<br>
+    〒600-8482 京都市下京区堀川通綾小路下る綾堀川町296 四条堀川ビル5階<br>
+    TEL：075-823-6098<br>
+    担当：ウエツ
+  </div>
+  <div class="copyright">© 2026 Little Concier Co., Ltd. ALL RIGHTS RESERVED.</div>
+</footer>
+
+</div>
+
+<script>
+const HASH = "8f2ddc4d26ef209a0bc628ff591bfdfb2441fc5091b7d0fe85558bf454bef6a5";
+async function sha256(s){
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+async function checkPwd(){
+  const v = document.getElementById("pwd").value;
+  const h = await sha256(v);
+  if(h === HASH){
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("report-content").style.display = "block";
+    sessionStorage.setItem("miyako_auth","1");
+  } else {
+    document.getElementById("err").style.display = "block";
+    document.getElementById("pwd").value = "";
+    document.getElementById("pwd").focus();
+  }
+}
+document.getElementById("pwd").addEventListener("keypress", e=>{ if(e.key==="Enter") checkPwd(); });
+if(sessionStorage.getItem("miyako_auth")==="1"){
+  document.getElementById("auth-screen").style.display = "none";
+  document.getElementById("report-content").style.display = "block";
+}
+window.addEventListener("load", ()=>document.getElementById("pwd").focus());
+</script>
+
+</body>
+</html>
